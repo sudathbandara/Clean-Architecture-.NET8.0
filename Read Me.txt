@@ -1,0 +1,39 @@
+Step 1: Create the project
+dotnet new sln -n TaskManager
+cd TaskManager
+
+dotnet new webapi -n TaskManager.Api
+dotnet new classlib -n TaskManager.Application
+dotnet new classlib -n TaskManager.Domain
+dotnet new classlib -n TaskManager.Infrastructure
+
+dotnet sln add TaskManager.Api/TaskManager.Api.csproj
+dotnet sln add TaskManager.Application/TaskManager.Application.csproj
+dotnet sln add TaskManager.Domain/TaskManager.Domain.csproj
+dotnet sln add TaskManager.Infrastructure/TaskManager.Infrastructure.csproj
+
+Step 2: Set dependencies
+
+# Api -> Application
+dotnet add TaskManager.Api reference TaskManager.Application
+
+# Application -> Domain
+dotnet add TaskManager.Application reference TaskManager.Domain
+
+# Infrastructure -> Application & Domain
+dotnet add TaskManager.Infrastructure reference TaskManager.Application
+dotnet add TaskManager.Infrastructure reference TaskManager.Domain
+
+Run and Test
+dotnet run --project TaskManager.Api
+
+Then test with:
+
+GET → https://localhost:5001/api/task
+
+POST → https://localhost:5001/api/task (Body: "My First Task")
+
+PUT → https://localhost:5001/api/task/{id}/complete
+
+Note: This is work for Visual Studio 2022
+
